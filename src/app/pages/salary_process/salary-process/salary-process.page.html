@@ -1,0 +1,121 @@
+
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+    <div class="page-inner">
+        <ion-row class="width-100 sub-header nomargin nopadding">
+            <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                    <span>{{actionHeaderText}} Salary</span>
+                </div>
+            </ion-col>
+            <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color width-100 text-right">
+                <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+                </div>
+            </ion-col>
+        </ion-row> 
+        <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+
+            <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" >
+                <div class="add-new-page-under">
+                    <ion-grid>
+                        <ion-row>
+
+                            <!-- Working Days-->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">Working days </ion-label>
+                                    <ion-input OnlyNumber="true" type="tel" name="working_days" [(ngModel)]="model.working_days" clearInput></ion-input>
+                                </div>
+                              </ion-col>
+
+                            <!-- Lop Days-->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Lop days </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="lop_days" [(ngModel)]="model.lop_days" clearInput></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- Lop Amount Days-->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Lop amount days </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="lop_amount_days" [(ngModel)]="model.lop_amount_days" clearInput></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- Total Lop Amount -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Total lop amount </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="total_lop_amount" [(ngModel)]="model.total_lop_amount" clearInput></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- Hiked Amount -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Hiked amount </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="hiked_amount" [(ngModel)]="model.hiked_amount" clearInput></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- Incentive -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Incentive </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="incentive" [(ngModel)]="model.incentive" clearInput></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- Salary deducation month -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                              <div>
+                              <ion-label position="floating">Salary deducation month <sup>*</sup></ion-label>
+                              <ion-datetime 
+                                class="year-month"
+                                displayFormat="MM/YYYY" 
+                                name="salary_deduction_month"
+                                min="1950-01" 
+                                max="2080-12"
+                                [(ngModel)]="model.salary_deduction_month"
+                                (ngModelChange)="myFunction(model.salary_deduction_month)"
+                                required
+                                  >
+                              </ion-datetime>
+                              </div>
+                          </ion-col>
+
+                        </ion-row>
+                    </ion-grid>
+                </div>
+                <div class="form-button-section">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                               
+                                <ion-button (click)="clickButtonType('Save')" color="secondary" size="default"
+                                type="submit" [disabled]="!addForm.valid" 
+                                color="secondary" tooltip="Save" flow="up">
+                                    <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text_save}}</span>
+                                </ion-button>
+                                <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'salary', parms_action_id]">
+                                    <ion-icon name="close"></ion-icon>
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

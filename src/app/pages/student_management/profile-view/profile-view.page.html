@@ -1,0 +1,417 @@
+<!-- common header show -->
+<common-header [ProfileData]="ProfileData" [profilepath]="profilepath"></common-header>
+
+<ion-content padding class="page-wrapper">
+  <div class="page-inner">
+    <ion-row class="width-100 sub-header nomargin nopadding">
+      <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+          <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+              <span>Employee Details</span>
+          </div>
+      </ion-col>
+      <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+          <div class = "sub-header-color width-100 text-right">
+          <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+          </div>
+      </ion-col>
+    </ion-row> 
+    <!-- Profile page start -->
+    <div class="profile-wrapper table-list-page">
+      <ion-grid>
+        <div class="profile-box">
+          <ion-row>
+            <ion-col size="5">
+              <mat-accordion style="margin-top: 20px; display: block;" class="example-headers-align"  multi="true">
+                    
+                <!-- ***********Official Details************ -->
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-size-18 panel-title">
+                            Official Details<sup>*</sup>
+                        </mat-panel-title>
+                        <span class="open-close-btn">
+                            <i class="down material-icons">keyboard_arrow_down</i>
+                            <i class="up material-icons">keyboard_arrow_up</i>
+                        </span>
+                    </mat-expansion-panel-header>
+                    <div class="company-info-body">
+                        <ion-grid>
+                            <ion-row>
+
+                              <!-- Employee Id -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.employee_code">
+                                <div class="view-element">
+                                  <i class="email material-icons">assignment_ind</i> 
+                                  <span class="text-name-bold">Employee Id :</span>
+                                  <span><b>{{ProfileData?.employee_code}}</b></span>
+                                </div>
+                              </ion-col>
+
+                              <!-- Official Email -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.email">
+                                <div class="view-element">
+                                  <i class="email material-icons">email</i> 
+                                  <span class="text-name-bold">Official Email :</span>
+                                  <span><b>{{ProfileData?.email}}</b></span>
+                                </div>
+                              </ion-col>
+
+                              <!-- Roll -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.roll?.role">
+                                <div class="view-element">
+                                  <i class="email material-icons">account_box</i> 
+                                  <span class="text-name-bold">Roll :</span>
+                                  <span><b>{{ProfileData?.roll?.role}}</b></span>
+                                </div>
+                              </ion-col>
+
+                              <!-- Designation -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.designation?.designation">
+                                <div class="view-element">
+                                  <i class="email material-icons">person_pin</i> 
+                                  <span class="text-name-bold">Designation :</span>
+                                  <span><b>{{ProfileData?.designation?.designation}}</b></span>
+                                </div>
+                              </ion-col>
+
+                              <!-- Joining Date -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.do_joining">
+                                <div class="view-element">
+                                  <i class="email material-icons">email</i> 
+                                  <span class="text-name-bold">Joining Date :</span>
+                                  <span><b>{{ProfileData?.do_joining | date:'dd MMM yyy'}}</b></span>
+                                </div>
+                              </ion-col>
+
+                              <!-- Skype Id -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.skype_id">
+                                <div class="view-element">
+                                  <i class="email material-icons">email</i> 
+                                  <span class="text-name-bold">Skype Id :</span>
+                                  <span><b>{{ProfileData?.skype_id}}</b></span>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </mat-expansion-panel>
+
+                <!-- ***********Personal Details************ -->
+                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-size-18 panel-title">
+                            Personal Details<sup>*</sup>
+                        </mat-panel-title>
+                        <span class="open-close-btn">
+                            <i class="down material-icons">keyboard_arrow_down</i>
+                            <i class="up material-icons">keyboard_arrow_up</i>
+                        </span>
+                    </mat-expansion-panel-header>
+                    <div class="company-info-body">
+                        <ion-grid>
+                            <ion-row>
+                              <!-- First Name  -->
+                              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.first_name">
+                                <div class="view-element">
+                                  <i class="home material-icons">person</i> 
+                                  <span class="text-name-bold">First Name :</span>
+                                  <span><b>{{ProfileData?.first_name}}</b></span>
+                                </div>
+                              </ion-col>
+
+                                <!-- Last Name  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.last_name">
+                                  <div class="view-element">
+                                    <i class="home material-icons">person</i> 
+                                    <span class="text-name-bold">Last Name :</span>
+                                    <span><b>{{ProfileData?.last_name}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Date Of Birth  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.dob">
+                                  <div class="view-element">
+                                    <i class="home material-icons">home</i> 
+                                    <span class="text-name-bold">Date Of Birth :</span>
+                                    <span><b>{{ProfileData?.dob | date:'dd MMM yyy'}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!--Gender -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.gender">
+                                  <div class="view-element">
+                                    
+                                    <i class="home material-icons">accessibility</i> 
+                                    <span class="text-name-bold">Gender :</span>
+                                    <span><b>{{ProfileData?.gender}}</b></span>
+                                  </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </mat-expansion-panel>
+
+                <!-- ***********Contact Details************ -->
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-size-18 panel-title">
+                            Contact Details<sup>*</sup>
+                        </mat-panel-title>
+                        <span class="open-close-btn">
+                            <i class="down material-icons">keyboard_arrow_down</i>
+                            <i class="up material-icons">keyboard_arrow_up</i>
+                        </span>
+                    </mat-expansion-panel-header>
+                    <div class="company-info-body">
+                        <ion-grid>
+                            <ion-row>
+                                 <!-- Country -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.countries_name?.name">
+                                  <div class="view-element">
+                                    <i class="home material-icons">home</i> 
+                                    <span class="text-name-bold">Country :</span>
+                                    <span><b>{{ProfileData?.countries_name?.name}}</b></span>
+                                  </div>
+                                </ion-col>
+    
+                                <!-- State -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.states_name?.name">
+                                  <div class="view-element">
+                                    <i class="home material-icons">home</i> 
+                                    <span class="text-name-bold">State :</span>
+                                    <span><b>{{ProfileData?.states_name?.name}}</b></span>
+                                  </div>
+                                </ion-col>
+    
+                                <!-- City  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.cities_name?.name">
+                                  <div class="view-element">
+                                    <i class="home material-icons">home</i> 
+                                    <span class="text-name-bold">City :</span>
+                                    <span><b>{{ProfileData?.cities_name?.name}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Personal Email -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.personal_mail">
+                                  <div class="view-element">
+                                    <i class="email material-icons">email</i> 
+                                    <span class="text-name-bold">Personal Email :</span>
+                                    <span><b>{{ProfileData?.personal_mail}}</b></span>
+                                  </div>
+                                </ion-col>
+    
+                                <!-- Mobile -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.phone_no">
+                                  <div class="view-element">
+                                    <i class="email material-icons">phone_in_talk</i> 
+                                    <span class="text-name-bold">Mobile :</span>
+                                    <span><b>{{ProfileData?.phone_no}}</b></span>
+                                  </div>
+                                </ion-col>
+    
+                                <!-- Address -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.address">
+                                  <div class="view-element">
+                                    <i class="email material-icons">place</i> 
+                                    <span class="text-name-bold">Address :</span>
+                                    <span><b>{{ProfileData?.address}}</b></span>
+                                  </div>
+                                </ion-col>
+                               
+                                <!-- Pin/zip Code  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.address">
+                                  <div class="view-element">
+                                    <i class="email material-icons">add_location</i> 
+                                    <span class="text-name-bold">Pin/zip Code :</span>
+                                    <span><b>{{ProfileData?.pin_code}}</b></span>
+                                  </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </mat-expansion-panel>
+
+                <!-- ***********Bank Details************ -->
+                <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-size-18 panel-title">
+                            Bank Details<sup>*</sup>
+                        </mat-panel-title>
+                        <span class="open-close-btn">
+                            <i class="down material-icons">keyboard_arrow_down</i>
+                            <i class="up material-icons">keyboard_arrow_up</i>
+                        </span>
+                    </mat-expansion-panel-header>
+                    <div class="company-info-body">
+                        <ion-grid>
+                            <ion-row>
+                                <!-- Bank Name  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.bank_name">
+                                  <div class="view-element">
+                                    <i class="email material-icons">account_balance</i> 
+                                    <span class="text-name-bold">Bank Name :</span>
+                                    <span><b>{{ProfileData?.bank_name}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Branch Name  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.branch">
+                                  <div class="view-element">
+                                    <i class="email material-icons">account_balance</i> 
+                                    <span class="text-name-bold">Branch Name :</span>
+                                    <span><b>{{ProfileData?.branch}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Ifsc code  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.ifsc_code">
+                                  <div class="view-element">
+                                    <i class="email material-icons">pin_drop</i> 
+                                    <span class="text-name-bold">Ifsc code :</span>
+                                    <span><b>{{ProfileData?.ifsc_code}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Account No  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.account_no">
+                                  <div class="view-element">
+                                    <i class="email material-icons">person_add</i> 
+                                    <span class="text-name-bold">Account No :</span>
+                                    <span><b>{{ProfileData?.account_no}}</b></span>
+                                  </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </mat-expansion-panel>
+
+
+                <!-- ***********Academic Details************ -->
+                <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-size-18 panel-title">
+                            Academic Details<sup>*</sup>
+                        </mat-panel-title>
+                        <span class="open-close-btn">
+                            <i class="down material-icons">keyboard_arrow_down</i>
+                            <i class="up material-icons">keyboard_arrow_up</i>
+                        </span>
+                    </mat-expansion-panel-header>
+                    <div class="company-info-body">
+                        <ion-grid>
+                            <ion-row>
+                                <!-- Qualification  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.qualification">
+                                  <div class="view-element">
+                                    <i class="email material-icons">school</i> 
+                                    <span class="text-name-bold">Qualification :</span>
+                                    <span><b>{{ProfileData?.qualification}}</b></span>
+                                  </div>
+                                </ion-col>
+
+                                <!-- Experience  -->
+                                <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12" *ngIf="ProfileData?.experience">
+                                  <div class="view-element">
+                                    <i class="email material-icons">flag</i> 
+                                    <span class="text-name-bold">Experience(Years) :</span>
+                                    <span><b>{{ProfileData?.experience}}</b></span>
+                                  </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </ion-col>
+            <ion-col size="7">
+              <div class="profile_box">
+                <form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)">
+                <ion-item>
+                  <ion-avatar slot="start">
+
+                      <img [hidden]="!uploademployee_imagePathShow " class="" src="{{imgaePreviewemployee_image}}" alt="image" />
+
+                      <img class="img-box" *ngIf="model.employee_image && !uploademployee_imagePathShow" src="{{file_url}}{{model?.path}}{{model?.employee_image}}" alt="image" />
+                      
+                      <img *ngIf="!model?.employee_image" src="assets/images/noimage.jpg">
+                      <mat-icon class="profile-edit"> 
+                      <input class="hide-img" name="employee_image2" [(ngModel)]="model.employee_image2" type="file" (change)="normalFileUpload($event, model.employee_image2, 'employee_image')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+                      edit</mat-icon>
+                  </ion-avatar>
+                  <ion-label class="profile-name">{{ProfileData?.first_name}} {{ProfileData?.last_name}}</ion-label>
+                  <ion-label class="update-btn">
+                    <button mat-button type="submit">Update</button>
+                  </ion-label>
+                </ion-item>
+              </form>
+                <div class="profile-details">
+                  <h2>Change Information</h2>
+                  <form #updateForm="ngForm" (ngSubmit)="onSubmit(updateForm)">
+                    <ion-grid>
+                      <ion-row>
+                        <!-- First Name  -->
+                        <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                          <div>
+                              <ion-label position="floating">First Name<sup>*</sup></ion-label>
+                              <ion-input name="first_name" [(ngModel)]="model.first_name" clearInput required [disabled]="edit == 'Edit Information'"></ion-input>
+                          </div>
+                        </ion-col>
+
+                        <!-- Last Name  -->
+                        <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                            <div>
+                                <ion-label position="floating">Last Name<sup>*</sup></ion-label>
+                                <ion-input name="last_name" [(ngModel)]="model.last_name" clearInput required [disabled]="edit == 'Edit Information'"></ion-input>
+                            </div>
+                        </ion-col>
+
+                        <!-- Personal Email -->
+                        <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                            <div>
+                                <ion-label position="floating">Personal Email<sup>*</sup> </ion-label>
+                                <ion-input type="email" name="personal_mail" [(ngModel)]="model.personal_mail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" clearInput email [disabled]="edit == 'Edit Information'"></ion-input>
+                            </div>
+                        </ion-col>
+
+                        <!-- mobile -->
+                        <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                            <div>
+                                <ion-label position="floating">Mobile<sup>*</sup> </ion-label>
+                                <ion-input OnlyNumber="true" type="tel" minlength="10"maxlength="10" name="phone_no" [(ngModel)]="model.phone_no" clearInput required [disabled]="edit == 'Edit Information'"></ion-input>
+                            </div>
+                        </ion-col>
+
+                        <!-- address -->
+                        <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                            <div>
+                                <ion-label position="floating">Address<sup>*</sup></ion-label>
+                                <ion-textarea auto-grow="true" name="address" [(ngModel)]="model.address" required clearInput [disabled]="edit == 'Edit Information'"></ion-textarea>
+                            </div>
+                        </ion-col>
+                      
+                      </ion-row>
+                    </ion-grid>
+                    <div class="edit-button-row">
+                      <a mat-raised-button color="primary" (click)="onSave()" [ngClass]="{'edit-fields': edit == 'Update Information'}">Edit Information</a>
+                      <button mat-raised-button type="submit" [ngClass]="{'edit-fields': edit == 'Edit Information'}"color="primary">Update Information</button>
+                      <button [ngClass]="{'edit-fields': edit == 'Edit Information'}" mat-raised-button fill="clear" class="close-btn" (click)="onCancle()">
+                        <ion-icon name="close"></ion-icon>
+                        Cancel
+                    </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
+    </div>
+    <!-- Profile page end -->
+  </div>
+  	
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

@@ -1,0 +1,47 @@
+<ion-app>
+    <ion-split-pane when="lg">
+      <!------------ Side Menu Starts --------------->
+        <ion-menu class="side-main-menu" contentId="menucontent">
+          <!------------ Menu Header Starts ------------->
+          <ion-header>
+            <ion-toolbar >
+              <ion-title>
+                <div class="logo header_logo">
+                  <img src="assets/images/logo.png" alt="logo">
+                </div>
+              </ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <!------------------ Menu Header ends -------- -->
+          <ion-content color="theme">
+            <div class="text-center" >
+              
+              <!-- menu loading show-->
+              <div class="menu-loading" *ngIf="userInfodDataLoading">
+                <ion-progress-bar type="indeterminate" reversed="true"></ion-progress-bar>
+                <div class="menu-loading-inner">
+                  <ion-spinner name="dots" color="light" style="zoom:2.0;"></ion-spinner>
+                </div>
+              </div>
+                
+              <!-------------------super admin Menu Content Starts ------------>
+                <mat-accordion color="primary" class="mat-menu display-inline-block margin-top-10" >
+                  <!-- Single menu start -->
+                  <mat-expansion-panel *ngFor="let sidemenu of sidebarData;" class="margin-bottom-5"  #example routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" [ngClass]="{'active': active}" (click)="listDetails(sidemenu?.module?.module_url, sidemenu?.module?.id)">
+                    <mat-expansion-panel-header class="mat-header-bg" [class.active-parent] = "example.expanded" >
+                      <mat-panel-title class = "font-size-11 line-height-16" >
+                        <ion-icon class="margin-right-10 font-size-16" name="logo-buffer" slot="start"></ion-icon>
+                        {{sidemenu?.module?.module_name}} 
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              <!-------------------- super admin  Menu Content Ends -->
+            </div>
+          </ion-content>
+        </ion-menu>
+      <!-- ---------- Side Menu Ends ---------------->
+
+        <ion-router-outlet id="menucontent" main></ion-router-outlet>
+    </ion-split-pane>
+</ion-app>

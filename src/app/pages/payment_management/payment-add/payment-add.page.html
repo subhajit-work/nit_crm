@@ -1,0 +1,184 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content class="page-wrapper">
+  <div class="page-inner">
+    <ion-row class="width-100 sub-header nomargin nopadding">
+      <ion-col size-xs="7" size-sm="6" class="sub-header-item pull-left width-100 padding-10">
+        <div class="sub-header-color pull-left width-100 font-size-18 vertical-middle">
+          <span>{{actionHeaderText}} Payment</span>
+        </div>
+      </ion-col>
+      <ion-col size-xs="5" size-sm="6" class="sub-header-item pull-left width-100 padding-10">
+        <div class="sub-header-color width-100 text-right">
+          <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+      <!-- loading -->
+      <div class="edit-loading-page" *ngIf="editLoading">
+        <span>
+          <ion-spinner name="lines"></ion-spinner>
+        </span>
+      </div>
+
+      <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+        <div class="add-new-page-under">
+          <ion-grid>
+            <ion-row>
+
+              <!-- for edit -->
+              <input *ngIf="actionHeaderText == 'Edit'" type="hidden" name="_method" [(ngModel)]="onEditField">
+              <input *ngIf="actionHeaderText == 'Edit'" type="hidden" name="old_image" [(ngModel)]="old_image">
+
+              <!-- student_name -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <ion-label position="floating">Student Name <sup>*</sup></ion-label>
+                <ng-select [loading]="selectLoading" [dropdownPosition]="'bottom'"
+                  placeholder="Please Select Student Name" [items]="studentList" bindLabel="name" name="student_name"
+                  bindValue="id" (change)="onChange(model.student_name)" [searchable]="false"
+                  [(ngModel)]="model.student_name" required>
+                  <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text"
+                      (input)="roleSerch.filter($event.target.value)" [autofocus]="true" />
+                  </ng-template>
+                </ng-select>
+              </ion-col>
+
+              <!-- Course_name -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" [ngClass]="{'disabled-only-pointer':true}">
+                <ion-label position="floating">Course Name <sup>*</sup></ion-label>
+                <ng-select [loading]="selectLoading" [dropdownPosition]="'bottom'" placeholder="Please Select Course"
+                  [items]="courseList" bindLabel="course_name" name="course_name" bindValue="id" [searchable]="false"
+                  [(ngModel)]="model.course_name" required>
+                  <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text"
+                      (input)="roleSerch.filter($event.target.value)" [autofocus]="true" />
+                  </ng-template>
+                </ng-select>
+              </ion-col>
+
+              <!-- Total Amount -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" [ngClass]="{'disabled-only-pointer':true}">
+                <div>
+                  <ion-label position="floating">Course Amount <sup>*</sup> </ion-label>
+                  <ion-input OnlyNumber="true" type="tel" name="total_amount" [(ngModel)]="model.total_amount"
+                    clearInput required></ion-input>
+                </div>
+              </ion-col>
+
+                <!-- due_amount -->
+                <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                  <div>
+                    <ion-label position="floating">{{paymentStatusName}} Amount <sup>*</sup> </ion-label>
+                    <ion-input OnlyNumber="true" type="tel" name="due_amount" [(ngModel)]="model.due_amount"
+                      clearInput required></ion-input>
+                  </div>
+                </ion-col>
+
+              <!-- payment_month -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <ion-label position="floating">Payment month <sup>*</sup></ion-label>
+                <ng-select [loading]="selectLoading" [dropdownPosition]="'bottom'"
+                  placeholder="Please Select Payment Month" [items]="paymentmonthList" bindLabel="name"
+                  name="payment_month" bindValue="name" [searchable]="false" [(ngModel)]="model.payment_month" required>
+                  <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text"
+                      (input)="roleSerch.filter($event.target.value)" [autofocus]="true" />
+                  </ng-template>
+                </ng-select>
+              </ion-col>
+
+              <!-- payment_type -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <ion-label position="floating">Payment type <sup>*</sup></ion-label>
+                <ng-select [loading]="selectLoading" [dropdownPosition]="'bottom'"
+                  placeholder="Please Select Payment Type" [items]="paymentList" bindLabel="name" name="payment_type"
+                  bindValue="name" (change)="onPaymentId(model.payment_type)" [searchable]="false"
+                  [(ngModel)]="model.payment_type" required>
+                  <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text"
+                      (input)="roleSerch.filter($event.target.value)" [autofocus]="true" />
+                  </ng-template>
+                </ng-select>
+              </ion-col>
+
+              <!-- payment_id -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <div>
+                  <ion-label position="floating">Payment id <sup>*</sup> </ion-label>
+                  <ion-input OnlyNumber="true" type="tel" name="payment_id" [(ngModel)]="model.payment_id" clearInput
+                    required>
+                  </ion-input>
+                </div>
+              </ion-col>
+
+              <!-- Payment_date -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <div>
+                  <ion-label position="floating">Payment date <sup>*</sup></ion-label>
+                  <li-ionic4-datepicker
+                    [ngClass]="{'view-fields': get_user_dtls?.emp_role == 'HR' || get_user_dtls?.emp_role == 'Admin'}"
+                    name="payment_date" required [(ngModel)]="model.payment_date" [inputDateConfig]="datePickerObj"
+                    (ngModelChange)="myFunction()">
+                  </li-ionic4-datepicker>
+                </div>
+              </ion-col>
+
+              <!-- payment_remark -->
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                <div>
+                  <ion-label position="floating">Payment Remark</ion-label>
+                  <ion-textarea auto-grow="true" name="payment_remark" [(ngModel)]="model.payment_remark" clearInput>
+                  </ion-textarea>
+                </div>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </div>
+        <div class="form-button-section">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12" size-lg="12">
+                <ion-button color="danger" size="default" tooltip="Reload" (click)="reloadPageAlert()">
+                  Reload
+                </ion-button>
+                <ion-button (click)="clickButtonType('Save')" color="secondary" size="default" type="submit"
+                  [disabled]="!addForm.valid" color="secondary" tooltip="Save" flow="up">
+                  <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner>
+                  <span class="submitText">{{form_submit_text_save}}</span>
+                </ion-button>
+                <ion-button *ngIf="get_user_dtls?.emp_role == 'HR' || get_user_dtls?.emp_role == 'Admin'"
+                  (click)="clickButtonType('Save-add-another')" color="secondary" size="default" type="submit"
+                  [disabled]="!addForm.valid" color="secondary" tooltip="Save & Add Another" flow="up">
+                  <ion-spinner *ngIf="form_submit_text_save_another == 'Submitting'" name="crescent"></ion-spinner>
+                  <span class="submitText">
+                    <span class="submitText">{{form_submit_text_save_another}}</span>
+                  </span>
+                </ion-button>
+                <ion-button *ngIf="get_user_dtls?.emp_role == 'HR' || get_user_dtls?.emp_role == 'Admin'" size="default"
+                  fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'user']">
+                  <ion-icon name="close"></ion-icon>
+                  Cancel
+                </ion-button>
+
+                <ion-button [hidden]="get_user_dtls?.emp_role == 'HR' || get_user_dtls?.emp_role == 'Admin'"
+                  size="default" fill="clear" color="danger" tooltip="Cancel" flow="up"
+                  [routerLink]="'/profile-view/'+ model?.id">
+                  <ion-icon name="close"></ion-icon>
+                  Cancel
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

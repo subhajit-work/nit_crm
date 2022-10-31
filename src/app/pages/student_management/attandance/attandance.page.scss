@@ -1,0 +1,15 @@
+.profile-wrapper .profile-box {
+    margin-top: 0px;
+}
+.attendance-item {
+    border: 1px dashed #000;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    .attendance-header {
+        background: #44444414;
+    }
+    .attendance-col ion-col .view-element {
+        border: 1px solid #4444;
+        border-radius: 4px;
+    }
+}

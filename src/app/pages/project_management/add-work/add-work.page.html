@@ -1,0 +1,82 @@
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+    <div class="page-inner">
+        <ion-row class="width-100 sub-header nomargin nopadding">
+            <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                    <span>{{actionHeaderText}} Comments</span>
+                </div>
+            </ion-col>
+            <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color width-100 text-right">
+                <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+                </div>
+            </ion-col>
+        </ion-row> 
+        <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+            <!-- loading -->
+            <div class="edit-loading-page" *ngIf="editLoading">
+                <span>
+                    <ion-spinner name="lines"></ion-spinner>
+                </span>
+            </div>
+
+            <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" >
+                <div class="add-new-page-under">
+                    <ion-grid>
+                        <ion-row>
+                            <!-- Work Description -->
+                            <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="6">
+                              <div>
+                                  <ion-label position="floating">Work Description <sup>*</sup></ion-label>
+                                  <ion-textarea auto-grow="true" name="task_description" [(ngModel)]="model.task_description" clearInput required></ion-textarea>
+                              </div>
+                            </ion-col>
+
+                            <!-- Start Time -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Start Time<sup>*</sup></ion-label>
+                                  <ion-input type="time" name="start_time" [(ngModel)]="model.start_time" clearInput required></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- End Time -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">End Time<sup>*</sup></ion-label>
+                                    <ion-input type="time" name="end_time" [(ngModel)]="model.end_time" clearInput required></ion-input>
+                                </div>
+                              </ion-col>
+                            
+                        </ion-row>
+                    </ion-grid>
+                </div>
+                <div class="form-button-section">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                                <ion-button *ngIf="this.parms_action_name != 'view'" (click)="clickButtonType('Save')" color="secondary" size="default"
+                                type="submit" [disabled]="!addForm.valid" 
+                                color="secondary" tooltip="Save" flow="up">
+                                    <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text_save}}</span>
+                                </ion-button>
+                                <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'task', parms_action_id]">
+                                    <ion-icon name="close"></ion-icon>
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

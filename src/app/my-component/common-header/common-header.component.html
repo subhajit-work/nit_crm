@@ -1,0 +1,66 @@
+<ion-header class="main-top-header">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="toogle-content"> 
+      <ion-menu-button auto-hide="true" ></ion-menu-button>
+    </ion-buttons>
+    <div class="button-group" *ngIf="office_in_data">
+      <ion-button [disabled]="officeLoader" size="small" class="office-in" *ngIf="office_in_data.office_in" [ngClass]="{'office-out': text_office == 'Office Out'}" shape="round" fill="outline" color="danger" (click)="officeIn('Office Out')">
+        <span *ngIf="!officeLoader">Office Out</span>
+        <ion-spinner name="dots" *ngIf="officeLoader"></ion-spinner>
+      </ion-button>
+      <ion-button [disabled]="officeLoader" size="small" class="office-in" *ngIf="!office_in_data.office_in" [ngClass]="{'office-out': text_office != 'Office Out'}" shape="round" fill="outline" color="danger" (click)="officeIn('Office In')">
+        <span *ngIf="!officeLoader">Office In</span>
+        <ion-spinner name="dots" *ngIf="officeLoader"></ion-spinner>
+      </ion-button>
+      
+      <ion-button size="small" shape="round" fill="outline" color="danger" class="time-show" *ngIf="office_in_data.office_in">
+        <span>{{office_in_data?.office_in | date:'h:mm a '}}</span>
+      </ion-button>
+
+      <ion-buttons class="notification-bell">
+        <span><img (click)="openModal('task_notification', '', '');" src="assets/images/note.png"></span>
+      </ion-buttons>
+    </div>
+    
+    <ion-buttons slot="end" class="user-content" *ngIf="get_user_dtls">
+      <div class="logout-dropdown">
+          <button mat-button [matMenuTriggerFor]="menu1">
+            <span *ngIf="loadingShow">
+              <ion-spinner style="width: 100px; position: relative; top: 6px;" name="crescent" color="primary"></ion-spinner>
+            </span>
+            <span *ngIf="!loadingShow">
+              <img *ngIf="get_user_dtls?.employee_image" class="img-scale" src="{{file_url}}{{get_user_dtls?.path}}{{get_user_dtls?.employee_image}}" />
+              <img *ngIf="!get_user_dtls?.employee_image" class="img-scale" src="assets/images/noimage.jpg" />
+              <span class="welcome-text">Welcome</span>
+              <span class="username">{{get_user_dtls?.first_name}} {{get_user_dtls?.last_name}} </span>
+            </span>
+            <mat-icon class="rotate_90">play_arrow</mat-icon>
+          </button>
+          <mat-menu #menu1="matMenu" xPosition="before">
+            <ion-grid class="extended logout dropdown-menu" style="width: 250px;">
+              <ion-row class="dropdown-menu-content">
+                <ion-col class="dropdown-menu-item ion-float-left width-33 ion-text-center" role="button" tabindex="0">
+                  <div class="dropdown-item-inner pointer ion-text-center" (click)="goProfilePageUrl()">
+                    <ion-icon class="width-100 ran-icon" name="person"></ion-icon>
+                    Profile 
+                  </div>
+                  
+                </ion-col>
+                <ion-col class="dropdown-menu-item ion-float-left width-33 ion-text-center" role="button" tabindex="0">
+                  <div class="dropdown-item-inner pointer ion-text-center full-width" (click)="changePasswordOpenModal('change_password_modal', get_user_dtls, '');">
+                    <ion-icon class="width-100 ran-icon" name="briefcase"></ion-icon> 
+                    Change password 
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="dropdown-menu-content">
+                  <ion-col class="dropdown-menu-lastitem" (click)="onLogout()">
+                      <div class="dropdown-item-inner pointer ion-text-center" role="button" tabindex="0"><ion-icon class="width-100 ran-icon1" name="key"></ion-icon> Log Out </div>
+                  </ion-col>                
+              </ion-row>
+            </ion-grid>
+          </mat-menu>
+      </div>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

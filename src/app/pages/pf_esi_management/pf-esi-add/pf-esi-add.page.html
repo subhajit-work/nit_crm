@@ -1,0 +1,105 @@
+
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+    <div class="page-inner">
+        <ion-row class="width-100 sub-header nomargin nopadding">
+            <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                    <span>{{actionHeaderText}} PF and ESI</span>
+                </div>
+            </ion-col>
+            <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color width-100 text-right">
+                <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+                </div>
+            </ion-col>
+        </ion-row> 
+        <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+            <!-- loading -->
+            <div class="edit-loading-page" *ngIf="editLoading">
+                <span>
+                    <ion-spinner name="lines"></ion-spinner>
+                </span>
+            </div>
+
+            <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" >
+                <div class="add-new-page-under">
+                    <ion-grid>
+                        <ion-row>
+
+                            <!-- Employee Name -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <ion-label position="floating">Employee Name<sup>*</sup></ion-label>
+                                <ng-select #employeeSearch
+                                    [loading]="selectLoading"
+                                    [dropdownPosition]="'bottom'"
+                                    placeholder="Please Select Employee"
+                                    [items]="empList"
+                                    bindLabel="employee_code"
+                                    name="employee"
+                                    bindValue="id"
+                                    (change)="onChange(model.employee)"
+                                    [searchable]="true"
+                                    [(ngModel)]="model.employee"
+                                    required
+                                    >
+                                    <ng-template  ng-option-tmp let-item="item">
+                                        {{item.first_name}} {{item.last_name}}<br/>
+                                        <small>{{item.employee_code}}</small>
+                                    </ng-template>
+                                </ng-select>
+                            </ion-col>  
+                            <!-- Employee Name-->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" *ngIf="model.employee">
+                                <div>
+                                    <ion-label position="floating">Employee Name <sup>*</sup></ion-label>
+                                    <ion-input name="emp" class="readonly" value="{{fname}} {{lname}}" clearInput required readonly></ion-input>
+                                </div>
+                            </ion-col>
+
+                            <!-- Universal Account Number(UAN) -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Universal Account Number(UAN) <sup>*</sup></ion-label>
+                                  <ion-input name="uan_no" [(ngModel)]="model.uan_no" clearInput required></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <!-- ESI No -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">ESI No <sup>*</sup></ion-label>
+                                  <ion-input name="esi_no" [(ngModel)]="model.esi_no" clearInput required></ion-input>
+                              </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+                <div class="form-button-section">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                                <ion-button *ngIf="this.parms_action_name != 'view'" (click)="clickButtonType('Save')" color="secondary" size="default"
+                                type="submit" [disabled]="!addForm.valid" 
+                                color="secondary" tooltip="Save" flow="up">
+                                    <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text_save}}</span>
+                                </ion-button>
+                                <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'pfandesi', parms_action_id]">
+                                    <ion-icon name="close"></ion-icon>
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

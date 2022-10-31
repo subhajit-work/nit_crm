@@ -1,0 +1,688 @@
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+    <div class="page-inner">
+        <ion-row class="width-100 sub-header nomargin nopadding">
+            <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                    <span>{{actionHeaderText}} Employee</span>
+                </div>
+            </ion-col>
+            <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color width-100 text-right">
+                <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+                </div>
+            </ion-col>
+        </ion-row> 
+        <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+            <!-- loading -->
+            <div class="edit-loading-page" *ngIf="editLoading">
+                <span>
+                    <ion-spinner name="lines"></ion-spinner>
+                </span>
+            </div>
+
+            <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+                <div class="add-new-page-under">
+                    <mat-accordion style="margin-top: 20px; display: block;" class="example-headers-align"  multi="true">
+                    
+                        <!-- ***********Official Details************ -->
+                        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Official Details<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- Employee Code -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" *ngIf="parms_action_name == 'edit' || parms_action_name == 'view'">
+                                            <div>
+                                                <ion-label position="floating">Employee Code<sup>*</sup> </ion-label>
+                                                <ion-input [readonly]="parms_action_name == 'edit'" class="readonly" type="text" name="employee_code" [(ngModel)]="model.employee_code" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Official Email -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Official Email<sup>*</sup> </ion-label>
+                                                <ion-input [ngClass]="{'Only-view-fields': actionHeaderText == 'Edit'}" type="email" name="email" [(ngModel)]="model.email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" clearInput email required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Email Password  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                                            <div>
+                                                <ion-label position="floating">Password(Official Mail)<sup>*</sup></ion-label>
+                                                <ion-input type="password" [readonly]="parms_action_name == 'edit'" class="readonly" name="mail_password" [(ngModel)]="model.mail_password" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Password  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" *ngIf="parms_action_name != 'edit' && parms_action_name != 'view'">
+                                            <div>
+                                                <ion-label position="floating">Password(CRM)<sup>*</sup></ion-label>
+                                                <ion-input type="password" name="password" [(ngModel)]="model.password" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Role -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <ion-label position="floating">Role<sup>*</sup></ion-label>
+                                            <ng-select #roleSerch
+                                                [loading]="selectLoading"
+                                                [dropdownPosition]="'bottom'"
+                                                placeholder="Please Select Role"
+                                                [items]="roleList"
+                                                bindLabel="role"
+                                                name="roll"
+                                                bindValue="id"
+                                                appendTo="body"
+                                                (change)="onChangeRoll(model.roll)"
+                                                [searchable]="true"
+                                                [(ngModel)]="model.roll"
+                                                required
+                                                >
+                                            </ng-select>
+                                        </ion-col>  
+                                       
+                                        <!-- Account Manager -->
+                                      
+
+                                        <!-- designation  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <ion-label position="floating">Designation<sup>*</sup></ion-label>
+                                            <ng-select #roleSerch
+                                                [loading]="selectLoading"
+                                                [dropdownPosition]="'bottom'"
+                                                placeholder="Please Select Designation"
+                                                [items]="desList"
+                                                bindLabel="designation"
+                                                name="designation"
+                                                bindValue="id"
+                                                appendTo="body"
+                                                (change)="onChange(model.designation)"
+                                                [searchable]="true"
+                                                [(ngModel)]="model.designation"
+                                                required
+                                                >
+                                            </ng-select>
+                                        </ion-col>
+
+                                        <!-- join_date -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                                            <div>
+                                            <ion-label position="floating">Joining Date<sup>*</sup></ion-label>
+                                            <li-ionic4-datepicker
+                                                name="do_joining" 
+                                                required
+                                                [(ngModel)]="model.do_joining"
+                                                [inputDateConfig]="datePickerObj" 
+                                                (ngModelChange)="myFunction()">
+                                            </li-ionic4-datepicker>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Skype Id  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Skype Id<sup>*</sup></ion-label>
+                                                <ion-input name="skype_id" [(ngModel)]="model.skype_id" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Skype Password  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Skype Password<sup>*</sup></ion-label>
+                                                <ion-input type="password" [readonly]="parms_action_name == 'edit'" class="readonly" name="skype_password" [(ngModel)]="model.skype_password" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Is Admin -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div class="toggle-button" >
+                                                <ion-label>Is Admin</ion-label>
+                                                <ion-label>
+                                                    <p class="onoff"><input type="checkbox" id="checkboxID" name="is_admin" [(ngModel)]="model.is_admin" (change)="is_Admin($event)"><label for="checkboxID"></label></p>
+                                                </ion-label>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Personal Details************ -->
+                        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Personal Details<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- First Name  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">First Name<sup>*</sup></ion-label>
+                                                <ion-input name="first_name" [(ngModel)]="model.first_name" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Last Name  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Last Name<sup>*</sup></ion-label>
+                                                <ion-input name="last_name" [(ngModel)]="model.last_name" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Date Of Birth  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                                            <div>
+                                            <ion-label position="floating">Date Of Birth<sup>*</sup></ion-label>
+                                            <li-ionic4-datepicker
+                                                name="dob" 
+                                                required
+                                                [(ngModel)]="model.dob"
+                                                [inputDateConfig]="datePickerObj" 
+                                                (ngModelChange)="myFunction()">
+                                            </li-ionic4-datepicker>
+                                            </div>
+                                        </ion-col>
+
+                                        <!--Gender -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div class="form-item">
+                                                <ion-label position="floating">Gender <sup>*</sup></ion-label>
+                                                <ion-list>
+                                                    <div class="radio-item">
+                                                        <input type="radio" id="male" value="Male" [(ngModel)]="model.gender" name="gender">
+                                                        <label for="male">Male</label>
+                                                    </div>
+                                                    <div class="radio-item">
+                                                        <input type="radio" id="female" value="Female" [(ngModel)]="model.gender" name="gender">
+                                                        <label for="female">Female</label>
+                                                    </div>
+                                                    <div class="radio-item">
+                                                        <input type="radio" id="other" value="Other" [(ngModel)]="model.gender" name="gender">
+                                                        <label for="other">Other</label>
+                                                    </div>
+                                                </ion-list>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Contact Details************ -->
+                        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Contact Details<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                         <!-- Country -->
+                                         <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Country<sup>*</sup></ion-label>
+                                                <ng-select #countrySerch [loading]="selectLoading" [dropdownPosition]="'bottom'" placeholder="Please Select Country" [items]="country_list" bindLabel="name" name="country" bindValue="id" [searchable]="false" [(ngModel)]="model.country" appendTo="body" (change)="OnChangeCountry(model.country)">
+                                                    <ng-template ng-header-tmp>
+                                                        <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="countrySerch.filter($event.target.value)" [autofocus]="true" />
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </ion-col>
+            
+                                        <!-- State -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">State<sup>*</sup></ion-label>
+                                                <ng-select #stateSerch [loading]="selectLoading" [dropdownPosition]="'bottom'" placeholder="Please Select State" [items]="state_list" bindLabel="name" name="state" bindValue="id" [searchable]="false" [(ngModel)]="model.state" appendTo="body" (change)="OnChangeState(model.state)">
+                                                    <ng-template ng-header-tmp>
+                                                        <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="stateSerch.filter($event.target.value)" [autofocus]="true" />
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </ion-col>
+            
+                                        <!-- City  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">City<sup>*</sup></ion-label>
+                                                <ng-select #citySerch [loading]="selectLoading" [dropdownPosition]="'bottom'" placeholder="Please Select City" [items]="city_list" bindLabel="name" name="city" bindValue="id" [searchable]="false" [(ngModel)]="model.city" appendTo="body">
+                                                    <ng-template ng-header-tmp>
+                                                        <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="citySerch.filter($event.target.value)" [autofocus]="true" />
+                                                    </ng-template>
+                                                </ng-select>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Personal Email -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Personal Email<sup>*</sup> </ion-label>
+                                                <ion-input type="email" name="personal_mail" [(ngModel)]="model.personal_mail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" clearInput email></ion-input>
+                                            </div>
+                                        </ion-col>
+            
+                                        <!-- mobile -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Mobile<sup>*</sup> </ion-label>
+                                                <ion-input OnlyNumber="true" type="tel" minlength="10"maxlength="10" name="phone_no" [(ngModel)]="model.phone_no" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+            
+                                        <!-- address -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Address<sup>*</sup></ion-label>
+                                                <ion-textarea auto-grow="true" name="address" [(ngModel)]="model.address" required clearInput></ion-textarea>
+                                            </div>
+                                        </ion-col>
+                                       
+                                        <!-- Pin/zip Code  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Pin/Zip Code<sup>*</sup></ion-label>
+                                                <ion-input name="pin_code" [(ngModel)]="model.pin_code" minlength="6" maxlength="6" OnlyNumber="true" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Bank Details************ -->
+                        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Bank Details<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- Account Holder Name -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Account Holder Name<sup>*</sup></ion-label>
+                                                <ion-input name="acholder_name"  [(ngModel)]="model.acholder_name" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Account No  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Account No<sup>*</sup></ion-label>
+                                                <ion-input name="account_no"  OnlyNumber="true" minlength="10" maxlength="20" [(ngModel)]="model.account_no" clearInput (change)="accountvalid(model.account_no, model.reaccount_no)" required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Reenter Account No  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Re-enter Account No<sup>*</sup></ion-label>
+                                                <ion-input name="account_no"  OnlyNumber="true" minlength="10" maxlength="20" [(ngModel)]="model.reaccount_no" (change)="accountvalid(model.account_no, model.reaccount_no)" (keyup)="accountvalid(model.account_no, model.reaccount_no)" clearInput required></ion-input>
+                                            </div>
+                                            <p class="error" *ngIf="error">{{error}}</p>
+                                        </ion-col>
+                                        <!-- Bank Name  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Bank Name<sup>*</sup></ion-label>
+                                                <ion-input name="bank_name" [(ngModel)]="model.bank_name" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Branch Name  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Branch Name<sup>*</sup></ion-label>
+                                                <ion-input name="branch" [(ngModel)]="model.branch" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Ifsc code  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Ifsc code<sup>*</sup></ion-label>
+                                                <ion-input name="ifsc_code"  minlength="11" maxlength="11" [(ngModel)]="model.ifsc_code" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Documents************ -->
+                        <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Documents<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- Employee Image  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                                            <div class="file_upload form-item">
+                                                <ion-label position="floating">Employee Image <sup>*</sup></ion-label>
+                                                <div class="normal-file-uploading">
+                                                    <span class="upload-file profile-upload">
+                                                        Upload Picture
+                                                        <input [(ngModel)]="model.employee_image2" type="file" (change)="normalFileUpload($event, model.employee_image2, 'employee_image')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+                                                    </span>
+                                                    <img [hidden]="!uploademployee_imagePathShow " class="form-upload-image" src="{{imgaePreviewemployee_image}}" alt="image" />
+
+                                                    <img *ngIf="model.employee_image && !uploademployee_imagePathShow" class="form-upload-image" src="{{file_url}}{{model?.path}}{{model?.employee_image}}" alt="image" />
+
+                                                    <span class="image-clear img" (click)="fileCross(model.employee_image2, 'employee_image')" [hidden]="!model.employee_image && !model.employee_image2">
+                                                        <ion-icon name="close"></ion-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ion-col>
+                                        
+                                        <!-- Aadher No  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Aadhar No<sup>*</sup></ion-label>
+                                                <ion-input name="aadhar_no" onKeyPress="if(this.value.length==12)" OnlyNumber="true" minlength="12" maxlength="12"[(ngModel)]="model.aadhar_no" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Aadhar Image  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                                            <div class="file_upload form-item">
+                                                <ion-label position="floating">Aadhar Image <sup>*</sup></ion-label>
+                                                <div class="normal-file-uploading">
+                                                    <span class="upload-file profile-upload">
+                                                        Upload Picture
+                                                        <input [(ngModel)]="model.aadhar_image2" type="file" (change)="normalFileUpload($event, model.aadhar_image2, 'aadhar_image')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*" required>
+                                                    </span>
+                                                    <img [hidden]="!uploadaadhar_imagePathShow " class="form-upload-image" src="{{imgaePreviewaadhar_image}}" alt="image" />
+
+                                                    <img *ngIf="model.aadhar_image && !uploadaadhar_imagePathShow" class="form-upload-image" src="{{file_url}}{{model?.path}}{{model?.aadhar_image}}" alt="image" />
+
+                                                    <span class="image-clear img" (click)="fileCross(model.aadhar_image2, 'aadhar_image')" [hidden]="!model.aadhar_image && !model.aadhar_image2">
+                                                        <ion-icon name="close"></ion-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- PAN No  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">PAN No<sup>*</sup></ion-label>
+                                                <ion-input name="pan_no" maxlength="10" [(ngModel)]="model.pan_no" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Pan Image  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                                            <div class="file_upload form-item">
+                                                <ion-label position="floating">PAN Image <sup>*</sup></ion-label>
+                                                <div class="normal-file-uploading">
+                                                    <span class="upload-file profile-upload">
+                                                        Upload Picture
+                                                        <input [(ngModel)]="model.pan_image2" type="file" (change)="normalFileUpload($event, model.pan_image2, 'pan_image')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*" required>
+                                                    </span>
+                                                    <img [hidden]="!uploadpan_imagePathShow " class="form-upload-image" src="{{imgaePreviewpan_image}}" alt="image" />
+
+                                                    <img *ngIf="model.pan_image && !uploadpan_imagePathShow" class="form-upload-image" src="{{file_url}}{{model?.path}}{{model?.pan_image}}" alt="image" />
+
+                                                    <span class="image-clear img" (click)="fileCross(model.pan_image2, 'pan_image')" [hidden]="!model.pan_image && !model.pan_image2">
+                                                        <ion-icon name="close"></ion-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Resume  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                                            <div class="file_upload form-item">
+                                                <ion-label position="floating">Resume </ion-label>
+                                                <div class="normal-file-uploading d-flex">
+                                                    <span class="upload-file profile-upload">
+                                                        Upload file
+                                                        <input [(ngModel)]="model.resume2" type="file" (change)="normalFileUpload($event, model.resume2, 'resume')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="pdf/*" >
+                                                    </span>
+                                                    <span [hidden]="!uploadresumePathShow" class="p-6">{{resumename}}</span>
+
+                                                    
+
+
+                                                    <img *ngIf="model.resume && !uploadresumePathShow" class="form-upload-image" src="{{file_url}}{{model?.path}}{{model?.resume}}" alt="image" />
+                                                    <span class="image-clear img" (click)="fileCross(model.resumee2, 'resume')" [hidden]="!model.resume && !model.resume2">
+                                                        <ion-icon name="close"></ion-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ion-col>
+                                      
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Academic Details************ -->
+                        <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Academic Details<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- Qualification  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Qualification<sup>*</sup></ion-label>
+                                                <ion-input name="qualification"  [(ngModel)]="model.qualification" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+
+                                        <!-- Experience  -->
+                                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                            <div>
+                                                <ion-label position="floating">Experience(years)<sup>*</sup></ion-label>
+                                                <ion-input name="experience" [(ngModel)]="model.experience" clearInput required></ion-input>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+
+                        <!-- ***********Permission************ -->
+                        <mat-expansion-panel [expanded]="step === 6" (opened)="setStep(6)" hideToggle="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="font-size-18 panel-title">
+                                    Permission<sup>*</sup>
+                                </mat-panel-title>
+                                <span class="open-close-btn">
+                                    <i class="down material-icons">keyboard_arrow_down</i>
+                                    <i class="up material-icons">keyboard_arrow_up</i>
+                                </span>
+                            </mat-expansion-panel-header>
+                            
+                            <div class="company-info-body">
+                                <ion-grid>
+                                    
+                                    <ion-row class="t-scroll">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Action</th>
+                                                    <th>Modules</th>
+                                                    <th>Report Cards</th>
+                                                    <th>Chart</th>
+                                                    <th>List</th>
+                                                    <th>Add</th>
+                                                    <th>Update</th>
+                                                    <th>View</th>
+                                                    <th>Delete</th>                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let dynamic of dynamicArray; let i = index;" >
+                                                    <td (click)="deleteRow(i, dynamicArray[i].module)">
+                                                        <ion-icon name='trash' class="remove-row"></ion-icon>
+                                                    </td>
+                                                    <td *ngIf="isAdmin != true">
+                                                        <div class="select-M">
+                                                            <ng-select #moduleSerch [loading]="selectLoading" [dropdownPosition]="'bottom'"  [items]="moduleList" bindLabel="module_name" name="module{{i+1}}" bindValue="id" [searchable]="false" [(ngModel)]="dynamicArray[i].module" (ngModelChange)="onModuleChange(dynamicArray[i].module, i)" appendTo="body">
+                                                                <ng-template ng-header-tmp>
+                                                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="moduleSerch.filter($event.target.value)" [autofocus]="true" />
+                                                                </ng-template>
+                                                            </ng-select>
+                                                        </div>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <div class="select-M">
+                                                            <ng-select #moduleSerch [loading]="selectLoading" [dropdownPosition]="'bottom'"  [items]="moduleList" bindLabel="module_name" name="module{{i+1}}" bindValue="id" [searchable]="false" [(ngModel)]="dynamicArray[i].module" disabled>
+                                                                <ng-template ng-header-tmp>
+                                                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="moduleSerch.filter($event.target.value)" [autofocus]="true" />
+                                                                </ng-template>
+                                                            </ng-select>
+                                                        </div>
+                                                    </td>
+                                                    <!-- Dashboard Cards -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_dashboard_cards{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_dashboard_cards" (change)="dynamicArray[i].p_dashboard_cards = $event.checked ? 1: 0"  [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_dashboard_cards{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_dashboard_cards" (change)="dynamicArray[i].p_dashboard_cards = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- Dashboard Cards -->
+                                                    <!-- Chart -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_chart{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_chart" (change)="dynamicArray[i].p_chart = $event.checked ? 1: 0" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_chart{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_chart" (change)="dynamicArray[i].p_chart = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- Chart -->
+                                                    <!-- List -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_list{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_list" (change)="dynamicArray[i].p_list = $event.checked ? 1: 0 " [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_list{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_list" (change)="dynamicArray[i].p_list = $event.checked ? 1: 0 " [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- List -->
+                                                    <!-- Add -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_add{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_add" (change)="dynamicArray[i].p_add = $event.checked ? 1: 0" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_add{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_add" (change)="dynamicArray[i].p_add = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- Add -->
+                                                    <!-- Update -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_update{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_update" (change)="dynamicArray[i].p_update = $event.checked ? 1: 0" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_update{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_update" (change)="dynamicArray[i].p_update = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- Update -->
+                                                    <!-- View -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_view{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_view" (change)="dynamicArray[i].p_view = $event.checked ? 1: 0" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_view{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_view" (change)="dynamicArray[i].p_view = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- View -->
+                                                    <!-- Delete -->
+                                                    <td *ngIf="isAdmin != true">
+                                                        <mat-checkbox name="p_delete{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_delete" (change)="dynamicArray[i].p_delete = $event.checked ? 1: 0" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <td *ngIf="isAdmin == true">
+                                                        <mat-checkbox name="p_view{{i+1}}" class="example-margin" [(ngModel)]="dynamicArray[i].p_view" (change)="dynamicArray[i].p_view = $event.checked ? 1: 0" [disabled]="dynamicArray[i].module" [checked]="dynamicArray[i].module" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                                    </td>
+                                                    <!-- Delete -->
+                                                </tr>
+                                                <tr>
+                                                <td *ngIf="isAdmin != true">
+                                                    <button class="add-row-btn" type="button" (click)="addRow(i)">
+                                                        <ion-icon name="add-circle-outline" class="add-row"></ion-icon>
+                                                    </button>
+                                                </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <div class="form-button-section">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                              
+                                <ion-button *ngIf="parms_action_name != 'view'" (click)="clickButtonType('Save')" [disabled]="!addForm.valid" color="secondary" size="default"
+                                type="submit"  
+                                color="secondary" tooltip="Save" flow="up">
+                                    <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text_save}}</span>
+                                </ion-button>
+                                <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'employee', '2']">
+                                    <ion-icon name="close"></ion-icon>
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

@@ -1,0 +1,107 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content class="page-wrapper">
+  <div style="display: flow-root" class="page-inner">
+    <!-- ------------ sub Header Start ----------------->
+    <ion-row class="sub-header width-100 pull-left nomargin nopadding">
+      <ion-col size-xs="7" size-sm="6" class ="sub-header-item pull-left width-100 padding-10">
+        <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+          <span>Dashboard</span>
+        </div>
+      </ion-col>
+      <ion-col size-xs="5" size-sm="6" class ="transaction-inner pull-left width-100 padding-10">
+        <div class = "sub-header-color width-100 text-right">
+          <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <!-- ------------ sub Header End ----------------->
+    <div class="pull-left width-100">
+      <ion-grid >
+        <!-- loading -->
+        <div class="edit-loading-page" *ngIf="viewLoadData">
+          <span>
+              <ion-spinner color="secondary" name="lines"></ion-spinner>
+          </span>
+        </div>
+        <ion-row>
+          <ion-col size-xs="12" size-lg="9">
+            <ion-row class="display-search width-100 dashboard">
+              <ion-col size-xl="4" size-lg="4" size-md="6" size-sm="6" size-xs="12">
+                <ion-item class="card ongoing_projects">
+                  <ion-avatar slot="start">
+                    <mat-icon>assessment</mat-icon>
+                  </ion-avatar>
+                  <ion-label class="counter"><span>{{cardData?.ongoing_projects}}</span>
+                  <p class="text-color">Ongoing Projects</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xl="4" size-lg="4" size-md="6" size-sm="6" size-xs="12">
+                <ion-item class="card pending_task">
+                  <ion-avatar slot="start">
+                    <mat-icon>assignment</mat-icon>
+                  </ion-avatar>
+                  <ion-label class="counter"><span>{{cardData?.pending_task}}</span>
+                  <p class="text-color">Pending Task</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xl="4" size-lg="4" size-md="6" size-sm="6" size-xs="12">
+                <ion-item class="card total_leave">
+                  <ion-avatar slot="start">
+                    <mat-icon>shutter_speed</mat-icon>
+                  </ion-avatar>
+                  <ion-label class="counter"><span>{{cardData?.total_leave}}</span>
+                  <p class="text-color">Total Leave</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row class="display-search width-100">
+              <div class="dashboard-table scroll-table">
+                <table>
+                  <thead>
+                      <th>Id</th>
+                      <th>Project Name</th>
+                      <th>Description</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Task Status</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of tableData; let i = index" class="even-row-bgcolor">
+                      <td>{{i+1}}</td>
+                      <td>{{item?.project_id.project_name}}</td>
+                      <td>{{item?.description}}</td>
+                      <td>{{item?.start_time}}</td>
+                      <td>{{item?.end_time}}</td>
+                      <td><span [ngClass]="{'ongoing-color': item?.task_status === 'Ongoing', 'ontesting-color' : item?.task_status === 'Ontesting', 'oncompleted-color' : item?.task_status === 'Completed' }">{{item?.task_status}}</span></td>
+                    </tr>
+                    <tr *ngIf="tableData?.length == 0">
+                      <td colspan="100" class="ion-text-center">
+                        No Data Found
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ion-row>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="3">
+            <h4>Social Posts</h4>
+            <div class="social-box" >
+              <div class="social-item" *ngFor="let item of socialData;"  [innerHTML]="item?.description | safeHtml">
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

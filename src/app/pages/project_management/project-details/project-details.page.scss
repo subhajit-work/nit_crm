@@ -1,0 +1,13 @@
+mat-accordion {
+    mat-expansion-panel.mat-expanded {
+        mat-icon.less {
+            display: block;
+        }
+        mat-icon.more {
+            display: none;
+        } 
+    }
+}
+mat-icon.less {
+    display: none;
+}

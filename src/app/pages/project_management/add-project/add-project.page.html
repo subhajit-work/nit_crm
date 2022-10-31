@@ -1,0 +1,237 @@
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+    <div class="page-inner">
+        <ion-row class="width-100 sub-header nomargin nopadding">
+            <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                    <span>{{actionHeaderText}} Project</span>
+                </div>
+            </ion-col>
+            <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+                <div class = "sub-header-color width-100 text-right">
+                <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+                </div>
+            </ion-col>
+        </ion-row> 
+        <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+            <!-- loading -->
+            <div class="edit-loading-page" *ngIf="editLoading">
+                <span>
+                    <ion-spinner name="lines"></ion-spinner>
+                </span>
+            </div>
+            <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" >
+                <div class="add-new-page-under">
+                    <ion-grid>
+                        <ion-row>
+                            <!-- Project Name  -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">Project Name<sup>*</sup></ion-label>
+                                    <ion-input name="project_name" [(ngModel)]="model.project_name" clearInput required></ion-input>
+                                </div>
+                            </ion-col>
+
+                            <!-- Project Description -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">Project Description <sup>*</sup></ion-label>
+                                    <ion-textarea auto-grow="true" name="project_description" [(ngModel)]="model.project_description" clearInput required ></ion-textarea>
+                                </div>
+                            </ion-col>
+  
+                            <!-- Frontend -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">Frontend<sup>*</sup></ion-label>
+                                    <ion-input name="front_end" [(ngModel)]="model.front_end" clearInput required ></ion-input>
+                                </div>
+                            </ion-col>
+  
+                              <!-- Backend -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <div>
+                                    <ion-label position="floating">Backend<sup>*</sup></ion-label>
+                                    <ion-input name="back_end" [(ngModel)]="model.back_end" clearInput required></ion-input>
+                                </div>
+                            </ion-col>
+
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                <ion-label position="floating">Client Name <sup>*</sup></ion-label>
+                                <ng-select #clientSerch
+                                    [loading]="selectLoading"
+                                    [dropdownPosition]="'bottom'"
+                                    placeholder="Please Select Client"
+                                    [items]="clientList"
+                                    bindLabel="client_name"
+                                    name="client"
+                                    bindValue="id"
+                                    (change)="onChange(model.client)"
+                                    [searchable]="false"
+                                    [(ngModel)]="model.client"
+                                    required
+                                    >
+                                    <ng-template ng-header-tmp>
+                                        <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="clientSerch.filter($event.target.value)" [autofocus]="true" />
+                                    </ng-template>
+                                </ng-select>
+                              </ion-col>
+
+                            <!-- Project Status -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <ion-label position="floating">Project Status <sup>*</sup></ion-label>
+                              <ng-select   #statusSerch
+                                  [loading]="selectLoading"
+                                  [dropdownPosition]="'bottom'"
+                                  placeholder="Please Select Status"
+                                  [items]="statusList"
+                                  bindLabel="name"
+                                  name="project_status"
+                                  bindValue="name"
+                                  (change)="onChange(model.project_status)"
+                                  [searchable]="false"
+                                  [(ngModel)]="model.project_status"
+                                  required
+                                  
+                                  >
+                                  <ng-template ng-header-tmp>
+                                      <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="statusSerch.filter($event.target.value)" [autofocus]="true" />
+                                  </ng-template>
+                              </ng-select>
+                            </ion-col>
+
+                            <!-- Project Type -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <ion-label position="floating">Project Type <sup>*</sup></ion-label>
+                              <ng-select  #projectTypeSearch
+                                  [loading]="selectLoading"
+                                  [dropdownPosition]="'bottom'"
+                                  placeholder="Please Select Project Type"
+                                  [items]="projectList"
+                                  bindLabel="project_type"
+                                  name="project_type"
+                                  bindValue="id"
+                                  (change)="onChange(model.project_type)"
+                                  [searchable]="false"
+                                  [(ngModel)]="model.project_type"
+                                  required
+                                  [multiple]="true"
+                                  >
+                                  <ng-option [value]="item.id" *ngFor="let item of projectList">
+                                    {{item.project_type}}
+                                </ng-option>
+                                  <ng-template ng-header-tmp>
+                                      <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="projectTypeSearch.filter($event.target.value)" [autofocus]="true" />
+                                  </ng-template>
+                              </ng-select>
+                            </ion-col>
+
+                            <!-- Start_date -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                              <div>
+                                <ion-label position="floating">Start Date <sup>*</sup></ion-label>
+                                <li-ionic4-datepicker
+                                    
+                                    name="start_date" 
+                                    required
+                                    [(ngModel)]="model.start_date"
+                                    [inputDateConfig]="datePickerObj" 
+                                    (ngModelChange)="myFunction()">
+                                </li-ionic4-datepicker>
+                                </div>
+                            </ion-col>
+
+                            <!-- End_date -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                                <div>
+                                <ion-label position="floating">End Date <sup>*</sup></ion-label>
+                                <li-ionic4-datepicker 
+                                    
+                                    name="end_date"
+                                    required
+                                    [(ngModel)]="model.end_date"
+                                    [inputDateConfig]="datePickerObj" 
+                                    (ngModelChange)="myFunction()">
+                                </li-ionic4-datepicker>
+                                </div>
+                            </ion-col>
+
+                            <!-- Project Cost -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <div>
+                                  <ion-label position="floating">Project Cost <sup>*</sup> </ion-label>
+                                  <ion-input OnlyNumber="true" type="tel" name="project_cost" [(ngModel)]="model.project_cost" clearInput required></ion-input>
+                              </div>
+                            </ion-col>
+
+                            <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+                                <div class="file_upload form-item">
+                                    <ion-label position="floating">Agreement Documents <sup>*</sup></ion-label>
+                                    <div class="normal-file-uploading">
+                                        <span class="upload-file profile-upload">
+                                            Upload
+                                            <input [(ngModel)]="model.agreement_document2" type="file" (change)="normalFileUpload($event, model.agreement_document2, 'agreement_document')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+                                        </span>
+                                        <img [hidden]="!uploadagreement_documentPathShow " class="form-upload-image" src="{{imgaePreviewagreement_document}}" alt="image" />
+
+                                        <img *ngIf="model.agreement_document && !uploadagreement_documentPathShow" class="form-upload-image" src="{{file_url}}{{model?.path}}{{model?.agreement_document}}" alt="image" />
+
+                                        <span class="image-clear img" (click)="fileCross(model.agreement_document2, 'agreement_document')" [hidden]="!model.agreement_document && !model.agreement_document2">
+                                            <ion-icon name="close"></ion-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </ion-col>
+
+                            <!-- Project Manager -->
+                            <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                              <ion-label position="floating">Project Manager <sup>*</sup></ion-label>
+                              <ng-select #managerSerch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="Please Select Account Manager"
+                                [items]="acc_manager_list"
+                                bindLabel="acc_manager"
+                                name="project_manager"
+                                bindValue="id"
+                                (change)="onChange(model.project_manager)"
+                                [searchable]="true"
+                                [(ngModel)]="model.project_manager"
+                                required
+                                >
+                                <ng-template  ng-option-tmp let-item="item">
+                                    {{item.first_name}} {{item.last_name}}<br/>
+                                    <small>{{item.employee_code}}</small> 
+                                </ng-template>
+                              </ng-select>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+                <div class="form-button-section">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                                <ion-button *ngIf="this.parms_action_name != 'view'" (click)="clickButtonType('Save')" color="secondary" size="default" [hidden]="parms_action_name == 'view'"
+                                type="submit" [disabled]="!addForm.valid" 
+                                color="secondary" tooltip="Save" flow="up">
+                                    <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text_save}}</span>
+                                </ion-button>
+                                <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'project-management', '6']">
+                                    <ion-icon name="close"></ion-icon>
+                                    Cancel
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

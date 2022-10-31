@@ -1,0 +1,82 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content padding class="page-wrapper">
+  <div class="page-inner">
+    <ion-row class="width-100 sub-header nomargin nopadding">
+      <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+          <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+              <span>Attendance Report</span>
+          </div>
+      </ion-col>
+      <ion-col size-xs="5" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+          <div class = "sub-header-color width-100 text-right">
+          <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+          </div>
+      </ion-col>
+    </ion-row> 
+    <!-- Profile page start -->
+    <div class="profile-wrapper table-list-page">
+      <ion-grid>
+        
+        <div class="profile-box" *ngIf="!editLoading && attandanceData?.length != 0">
+            
+            <ion-row *ngFor="let item of attandanceData" class="attendance-item">
+              <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                <ion-row class="attendance-header">
+                  <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                    <div class="view-element">
+                      <i class="date_range material-icons">today</i>
+                      <span class="text-name-bold">Working Date :</span>
+                      <span><b>{{item?.office_in | date:'dd MMM yyy'}}</b></span>
+                    </div>
+                  </ion-col>
+                  <ion-col size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                    <div class="view-element">
+                      <i class="satellite material-icons">timer</i>
+                      <span class="text-name-bold">Working Time: </span>
+                      <span><b>{{item?.total_time}} Hrs.</b></span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngFor="let attendanceItem of item?.attendance_data" class="attendance-col">
+                  <ion-col *ngIf="attendanceItem?.office_in" size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                    <div class="view-element">
+                      <i class="satellite material-icons">timer</i>
+                      <span class="text-name-bold">Office In :</span>
+                      <span><b>{{attendanceItem?.office_in | date:'hh:mm a'}}</b></span>
+                      <a [href]="'https://www.latlong.net/c/?lat='+attendanceItem?.lat_office_in+'&long='+attendanceItem?.log_office_in" target="_blank">
+                        <i style="cursor: pointer;" class="satellite material-icons ion-float-right">person_pin_circle</i>
+                      </a>
+                    </div>
+                  </ion-col>
+                  <ion-col *ngIf="attendanceItem?.office_out" size-xs="12" size-sm="6" size-md="6"  size-lg="6">
+                    <div class="view-element" >
+                      <i class="email material-icons">timer_off</i>
+                      <span class="text-name-bold">Office Out :</span>
+                      <span><b>{{attendanceItem?.office_out | date:'hh:mm a'}}</b></span>
+                      <i style="cursor: pointer;" class="email material-icons ion-float-right">pin_drop</i>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            
+        </div>
+        <div class="profile-box" [ngClass]="{'no_profile': attandanceData?.length == 0}"  *ngIf="attandanceData?.length == 0 && !editLoading">
+          <ion-row>
+            <ion-col size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+              <div align="center">No Data Found</div>
+            </ion-col>
+          </ion-row>
+        </div>
+
+      </ion-grid>
+    </div>
+    <!-- Profile page end -->
+  </div>
+  	
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

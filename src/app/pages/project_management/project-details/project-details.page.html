@@ -1,0 +1,472 @@
+<!-- common header show -->
+<common-header></common-header>
+ 
+<ion-content class="page-wrapper">
+  <div class="page-inner">
+      <ion-row class="width-100 sub-header nomargin nopadding">
+          <ion-col size-xs="7" size-sm="6" class = "sub-header-item pull-left width-100 padding-10">
+              <div class = "sub-header-color pull-left width-100 font-size-18 vertical-middle">
+                  <span>Work Flowchart</span>
+              </div>
+          </ion-col>
+          <ion-col size-xs="5" size-sm="6" class="sub-header-item pull-left width-100 padding-10">
+              <div class = "sub-header-color width-100 text-right">
+              <span class="font-size-13"> {{curentDate | date:'dd MMM yyy'}} <i>|</i> {{curentDate | date:'h:mm a '}}</span>
+              </div>
+          </ion-col>
+      </ion-row> 
+      <div class="add-new-page-body" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+        <!-- loading -->
+        <div class="edit-loading-page" *ngIf="editLoading">
+            <span>
+                <ion-spinner color="secondary" name="lines"></ion-spinner>
+            </span>
+        </div>
+
+        <mat-accordion multi>
+          <mat-expansion-panel class="details-box-show ">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Project Deatils
+              </mat-panel-title>
+              <mat-icon class="more">expand_more</mat-icon>
+              <mat-icon class="less">expand_less</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="profile-wrapper">
+              <ion-grid>
+                <ion-row>
+                  <!-- Project Name-->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.name">
+                    <div class="view-element">
+                      <i class="satellite material-icons">badge</i>
+                      <span class="text-name-bold">Project Name :</span>
+                      <span><b> {{viewFormData?.project_data?.name}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Type -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.project_type">
+                    <div class="view-element ">
+                      <i class="near_me  material-icons">format_list_numbered</i>
+                      <span class="text-name-bold">Project Type :</span>
+                      <span><b>{{viewFormData?.project_data?.project_type}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Start Date -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.start_date">
+                    <div class="view-element ">
+                      <i class="home material-icons">today</i>
+                      <span class="text-name-bold">Start Date :</span>
+                      <span><b>{{viewFormData?.project_data?.start_date}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- End Date -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.end_date">
+                    <div class="view-element">
+                      <i class="smartphone material-icons">event</i>
+                      <span class="text-name-bold">End Date :</span>
+                      <span><b>{{viewFormData?.project_data?.end_date}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Description -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.description">
+                    <div class="view-element">
+                      <i class="email  material-icons">description</i>
+                      <span class="text-name-bold">Project Description :</span>
+                      <span><b>{{viewFormData?.project_data?.description}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Languages -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.project_data?.language">
+                    <div class="view-element">
+                      <i class="wc  material-icons">translate</i>
+                      <span class="text-name-bold">Project Languages :</span>
+                      <span><b>{{viewFormData?.project_data?.language}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Cost -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.project_cost">
+                    <div class="view-element">
+                      <i class="home material-icons">price_change</i>
+                      <span class="text-name-bold">Project Cost :</span>
+                      <span><b>{{viewFormData?.project_data?.currency_type}} {{viewFormData?.project_data?.project_cost}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Status-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.status">
+                    <div class="view-element">
+                      <i class="outlined_flag material-icons">speed</i>
+                      <span class="text-name-bold">Project Status :</span>
+                      <span><b>{{viewFormData?.project_data?.status}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Manager-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.manager_id">
+                    <div class="view-element">
+                      <i class="satellite material-icons">manage_accounts</i>
+                      <span class="text-name-bold">Project Manager :</span>
+                      <span><b>{{viewFormData?.project_data?.manager_id}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Project Team Members -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.emp_ids">
+                    <div class="view-element">
+                      <i class="near_me material-icons">groups</i>
+                      <span class="text-name-bold">Project Team Members :</span>
+                      <span><b>{{viewFormData?.project_data?.emp_ids}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Client Name-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.client_name">
+                    <div class="view-element">
+                      <i class="home material-icons">admin_panel_settings</i>
+                      <span class="text-name-bold">Client Name :</span>
+                      <span><b>{{viewFormData?.project_data?.client_name}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Mobile -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.mobile">
+                    <div class="view-element">
+                      <i class="smartphone material-icons">phone_iphone</i>
+                      <span class="text-name-bold">Mobile :</span>
+                      <span><b>{{viewFormData?.project_data?.mobile}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Alt Mobile-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.alt_mobile">
+                    <div class="view-element">
+                      <i class="email material-icons">phone_android</i>
+                      <span class="text-name-bold">Alt Mobile :</span>
+                      <span><b>{{viewFormData?.project_data?.alt_mobile}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Email -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.email">
+                    <div class="view-element">
+                      <i class="wc material-icons">email</i>
+                      <span class="text-name-bold">Email :</span>
+                      <span><b>{{viewFormData?.project_data?.email}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Alt Email -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.alt_email">
+                    <div class="view-element">
+                      <i class="home material-icons">mail_outline</i>
+                      <span class="text-name-bold">Alt Email :</span>
+                      <span><b>{{viewFormData?.project_data?.alt_email}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Company Name -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.company_name">
+                    <div class="view-element">
+                      <i class="outlined_flag material-icons">money</i>
+                      <span class="text-name-bold">Company Name :</span>
+                      <span><b>{{viewFormData?.project_data?.company_name}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Company Address -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.company_address">
+                    <div class="view-element">
+                      <i class="satellite material-icons">apartment</i>
+                      <span class="text-name-bold">Company Address :</span>
+                      <span><b>{{viewFormData?.project_data?.company_address}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Company GST -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.company_gst">
+                    <div class="view-element">
+                      <i class="near_me material-icons">podcasts</i>
+                      <span class="text-name-bold">Company GST :</span>
+                      <span><b>{{viewFormData?.project_data?.company_gst}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Company PAN -->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.project_data?.company_pan">
+                    <div class="view-element">
+                      <i class="home material-icons">confirmation_number</i>
+                      <span class="text-name-bold">Company PAN :</span>
+                      <span><b>{{viewFormData?.project_data?.company_pan}}</b></span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="details-box-show ">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Work Deatils
+              </mat-panel-title>
+              <mat-icon class="more">expand_more</mat-icon>
+              <mat-icon class="less">expand_less</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="profile-wrapper">
+              <ion-grid>
+                <ion-row>
+                  <!-- Work Name-->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.work_data?.work_name">
+                    <div class="view-element">
+                      <i class="satellite material-icons">badge</i>
+                      <span class="text-name-bold">Work Name :</span>
+                      <span><b> {{viewFormData?.work_data?.work_name}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Assign Developers -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.work_data?.emp_ids">
+                    <div class="view-element ">
+                      <i class="near_me  material-icons">format_list_numbered</i>
+                      <span class="text-name-bold">Assign Developers :</span>
+                      <span><b>{{viewFormData?.work_data?.emp_ids}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Start Date -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.work_data?.start_date">
+                    <div class="view-element ">
+                      <i class="home material-icons">today</i>
+                      <span class="text-name-bold">Start Date :</span>
+                      <span><b>{{viewFormData?.work_data?.start_date}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- End Date -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.work_data?.end_date">
+                    <div class="view-element">
+                      <i class="smartphone material-icons">event</i>
+                      <span class="text-name-bold">End Date :</span>
+                      <span><b>{{viewFormData?.work_data?.end_date}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Work Status-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.work_data?.status">
+                    <div class="view-element">
+                      <i class="outlined_flag material-icons">speed</i>
+                      <span class="text-name-bold">Work Status :</span>
+                      <span><b>{{viewFormData?.work_data?.status}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Work Description -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.work_data?.description">
+                    <div class="view-element">
+                      <i class="email  material-icons">description</i>
+                      <span class="text-name-bold">Work Description :</span>
+                      <span><b>{{viewFormData?.work_data?.description}}</b></span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="details-box-show ">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Task Deatils
+              </mat-panel-title>
+              <mat-icon class="more">expand_more</mat-icon>
+              <mat-icon class="less">expand_less</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="profile-wrapper">
+              <ion-grid>
+                <ion-row>
+                  <!-- Task Name-->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.task_data?.task">
+                    <div class="view-element">
+                      <i class="satellite material-icons">badge</i>
+                      <span class="text-name-bold">Task Name :</span>
+                      <span><b> {{viewFormData?.task_data?.task}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!--Assign developer-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.task_data?.emp_ids">
+                    <div class="view-element">
+                      <i class="near_me material-icons">manage_accounts</i>
+                      <span class="text-name-bold">Assign developer :</span>
+                      <span><b>{{viewFormData?.task_data?.emp_ids}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Task Status-->
+                  <ion-col size-xs="12" size-sm="6" size-md="3"  size-lg="4" *ngIf="viewFormData?.task_data?.status">
+                    <div class="view-element">
+                      <i class="outlined_flag material-icons">speed</i>
+                      <span class="text-name-bold">Task Status :</span>
+                      <span><b>{{viewFormData?.task_data?.status}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Task Time -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.task_data?.task_time">
+                    <div class="view-element ">
+                      <i class="home material-icons">timer</i>
+                      <span class="text-name-bold">Task Time :</span>
+                      <span><b>{{viewFormData?.task_data?.task_time}}</b></span>
+                    </div>
+                  </ion-col>
+                  <!-- Task Description -->
+                  <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="viewFormData?.task_data?.description">
+                    <div class="view-element">
+                      <i class="email  material-icons">description</i>
+                      <span class="text-name-bold">Task Description :</span>
+                      <span><b>{{viewFormData?.task_data?.description}}</b></span>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <div class="add-new-page-body">
+                  <div class="details-box-show profile-wrapper" *ngFor="let item of viewFormData?.task_progress_data ">
+                    <ion-row>
+                      <!-- Subject-->
+                      <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="item?.subject">
+                        <div class="view-element">
+                          <i class="home material-icons">badge</i>
+                          <span class="text-name-bold">Subject :</span>
+                          <span><b> {{item?.subject}}</b></span>
+                        </div>
+                      </ion-col>
+                      <!-- Work Date -->
+                      <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="item?.date">
+                        <div class="view-element ">
+                          <i class="near_me  material-icons">today</i>
+                          <span class="text-name-bold">Work Date :</span>
+                          <span><b>{{item?.date}}</b></span>
+                        </div>
+                      </ion-col>
+                      <!-- Start Time -->
+                      <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="item?.start_time">
+                        <div class="view-element ">
+                          <i class="satellite material-icons">hourglass_top</i>
+                          <span class="text-name-bold">Start Time :</span>
+                          <span><b>{{item?.start_time}} </b></span>
+                        </div>
+                      </ion-col>
+                      <!-- End Time -->
+                      <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="item?.end_time">
+                        <div class="view-element">
+                          <i class="email material-icons">hourglass_bottom</i>
+                          <span class="text-name-bold">End Time :</span>
+                          <span><b>{{item?.end_time}}</b></span>
+                        </div>
+                      </ion-col>
+                      <!-- Description -->
+                      <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="4" *ngIf="item?.comment">
+                        <div class="view-element">
+                          <i class="smartphone material-icons">description</i>
+                          <span class="text-name-bold">Description :</span>
+                          <span><b>{{item?.comment}}</b></span>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </div>
+              </ion-grid>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <form  #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" *ngIf="!editLoading">
+            <div class="add-new-page-under">
+                <ion-grid>
+                    <ion-row>
+
+                        <!-- for edit -->
+                        <input type="hidden" name="task_id" [(ngModel)]="parms_action_id">
+                        <input type="hidden" name="emp_id" [(ngModel)]="get_user_id">
+                      
+                        <!-- Subject  -->
+                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                          <div>
+                              <ion-label position="floating">Subject <sup>*</sup></ion-label>
+                              <ion-input name="subject" [(ngModel)]="model.subject" clearInput required></ion-input>
+                          </div>
+                        </ion-col>
+
+                        <!-- Work Date -->
+                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                          <div>
+                            <ion-label position="floating">Work Date <sup>*</sup></ion-label>
+                            <li-ionic4-datepicker 
+                              name="date" 
+                              required
+                              [(ngModel)]="model.date"
+                              [inputDateConfig]="datePickerObj" 
+                              (ngModelChange)="onChangeDateTime(model.date)">
+                            </li-ionic4-datepicker>
+                          </div>
+                        </ion-col>
+
+                        <!-- Start Time -->
+                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                          <div>
+                            <ion-label position="floating">Start Time <sup>*</sup></ion-label>
+                            
+                            <li-ionic-timepicker 
+                            name="start_time" 
+                            required
+                            [(ngModel)]="model.start_time"
+                            [inputTimeConfig]="timePickerObj" 
+                            (ngModelChange)="onChangeDateTime(model.start_time)"
+                            >
+                            </li-ionic-timepicker>
+                          </div>
+                        </ion-col>
+
+                        <!-- End Time -->
+                        <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3" >
+                          <div>
+                            <ion-label position="floating">End Time <sup>*</sup></ion-label>
+                            
+                            <li-ionic-timepicker 
+                            name="end_time" 
+                            required
+                            [(ngModel)]="model.end_time"
+                            [inputTimeConfig]="timePickerObj" 
+                            (ngModelChange)="onChangeDateTime(model.end_time)"
+                            >
+                            </li-ionic-timepicker>
+                          </div>
+                        </ion-col>
+
+                        <!-- Description -->
+                        <ion-col size-xs="12" size-sm="12">
+                          <div>
+                              <ion-label position="floating">Description <sup>*</sup></ion-label>
+                              <ion-textarea auto-grow="true" name="comment" [(ngModel)]="model.comment" clearInput required></ion-textarea>
+                          </div>
+                        </ion-col>
+
+                    </ion-row>
+                </ion-grid>
+            </div>
+            <div class="form-button-section">
+                
+                <ion-grid>
+                    <ion-row>
+                        <ion-col class="ion-text-center" size-xs="12" size-sm="12" size-md="12"  size-lg="12">
+                            <ion-button color="danger" size="default" tooltip="Reload" (click)="reloadPageAlert()">
+                                Reload
+                            </ion-button>
+                            <ion-button (click)="clickButtonType('Save')" color="secondary" size="default"
+                            type="submit" [disabled]="!addForm.valid" 
+                            color="secondary" tooltip="Save" flow="up">
+                                <ion-spinner *ngIf="form_submit_text_save == 'Submitting'" name="crescent"></ion-spinner> 
+                                <span class="submitText">{{form_submit_text_save}}</span>
+                            </ion-button>
+                            <ion-button (click)="clickButtonType('Save-add-another')" color="secondary" size="default"
+                                type="submit" [disabled]="!addForm.valid" 
+                                color="secondary" tooltip="Save & Add Another" flow="up">
+                                <ion-spinner *ngIf="form_submit_text_save_another == 'Submitting'" name="crescent"></ion-spinner> 
+                                <span class="submitText">
+                                    <span class="submitText">{{form_submit_text_save_another}}</span>
+                                </span>
+                            </ion-button>
+                            <ion-button size="default" fill="clear" color="danger" tooltip="Cancel" flow="up" [routerLink]="['/', 'lead-list']">
+                                <ion-icon name="close"></ion-icon>
+                                Cancel
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+        </form>
+      </div>
+  </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>
